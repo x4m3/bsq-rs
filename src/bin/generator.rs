@@ -1,6 +1,8 @@
 extern crate clap;
+extern crate rand;
 
 use clap::{App, Arg};
+use rand::Rng;
 
 fn main() {
     let matches = App::new("generator")
@@ -18,4 +20,24 @@ fn main() {
 }
 
 fn generate(x: u32, y: u32, density: u32) {
+    let mut i = 0;
+    let mut j = 0;
+    let mut rand = rand::thread_rng();
+
+    println!("{}", y);
+
+    while i < y {
+        j = 0;
+        while j < x {
+            if rand.gen_range(0, 101) <= density {
+                print!("o");
+            } else {
+                print!(".");
+            }
+            j += 1;
+        }
+        println!();
+        i += 1;
+    }
+
 }
