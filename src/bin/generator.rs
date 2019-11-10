@@ -21,7 +21,7 @@ fn main() {
 
 fn generate(x: u32, y: u32, density: u32) {
     let mut i = 0;
-    let mut j = 0;
+    let mut j;
     let mut rand = rand::thread_rng();
 
     println!("{}", y);
@@ -29,6 +29,7 @@ fn generate(x: u32, y: u32, density: u32) {
     while i < y {
         j = 0;
         while j < x {
+            // gen_range is [low, high)
             if rand.gen_range(0, 101) <= density {
                 print!("o");
             } else {
@@ -39,5 +40,4 @@ fn generate(x: u32, y: u32, density: u32) {
         println!();
         i += 1;
     }
-
 }
