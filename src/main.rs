@@ -1,8 +1,9 @@
 extern crate clap;
 
 use clap::{App, Arg};
-use std::fs::File;
+use std::io;
 use std::io::Read;
+use std::fs::File;
 
 fn main() {
     let matches = App::new("bsq")
@@ -10,14 +11,15 @@ fn main() {
     .get_matches();
 
     let path = matches.value_of("path").unwrap();
+
     let file_data = read_file(path);
+    println!("{:?}", file_data);
 }
 
-fn read_file(path: &str) -> std::io::Result<Vec<u8>> {
-    let mut file = File::open(path)?;
+fn read_file(path: &str) -> Result<Vec<u8>, io::Error> {
     let mut data = Vec::new();
 
-    file.read_to_end(&mut data)?;
+    File::open(path)?.read_to_end(&mut data)?;
 
-    return Ok(data);
+    Ok(data)
 }
