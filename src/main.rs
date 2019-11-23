@@ -5,7 +5,6 @@ use std:: {
     io,
     io::Read,
     fs::File,
-    path::Path,
 };
 
 fn main() {
@@ -14,17 +13,14 @@ fn main() {
     .get_matches();
 
     let path = matches.value_of("path").unwrap();
-
-    match Path::new(path).is_file() {
-        true => (),
-        false => {
-            eprintln!("error: could not open file {}", path);
+    let file_data = match read_file(path) {
+        Ok(file_data) => (file_data),
+        Err(e) => {
+            eprintln!("could not open {}: {}", path, e);
             ::std::process::exit(1);
         }
-    }
-
-    let file_data = read_file(path);
-
+    };
+    println!("{:?}", file_data);
 }
 
 fn read_file(path: &str) -> Result<Vec<u8>, io::Error> {
