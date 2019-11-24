@@ -19,7 +19,14 @@ fn main() {
     generate(x, y, density);
 }
 
-fn generate(x: u32, y: u32, density: u32) {
+/// Generates a map with a square and walls
+/// 
+/// # Arguments
+/// 
+/// * `x` - Width of the map
+/// * `y` - Height of the map
+/// * `density` - Density of walls
+pub fn generate(x: u32, y: u32, density: u32) {
     let mut i = 0;
     let mut j;
     let mut rand = rand::thread_rng();
