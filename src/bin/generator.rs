@@ -1,6 +1,3 @@
-extern crate clap;
-extern crate rand;
-
 use clap::{App, Arg};
 use rand::Rng;
 
