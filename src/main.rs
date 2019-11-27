@@ -19,12 +19,14 @@ fn main() {
         }
     };
     println!("{:?}", file_data);
+    let mut lines = file_data.lines();
+    println!("{:?}", lines.next());
 }
 
-fn read_file(path: &str) -> Result<Vec<u8>, io::Error> {
-    let mut data = Vec::new();
+fn read_file(path: &str) -> Result<String, io::Error> {
+    let mut data = String::new();
 
-    File::open(path)?.read_to_end(&mut data)?;
+    File::open(path)?.read_to_string(&mut data)?;
 
     Ok(data)
 }
