@@ -19,8 +19,14 @@ fn main() {
         }
     };
     println!("{:?}", file_data);
+    let number_lines = count_lines(&file_data);
+    println!("there is {} lines in this file", number_lines);
     let mut lines = file_data.lines();
     println!("{:?}", lines.next());
+}
+
+fn count_lines(file: &String) -> usize {
+    file.as_bytes().iter().filter(|&&c| c == b'\n').count()
 }
 
 fn read_file(path: &str) -> Result<String, io::Error> {
