@@ -1,6 +1,7 @@
 use clap::{App, Arg};
 use std:: {
     io,
+    process,
     io::Read,
     fs::File,
 };
@@ -15,7 +16,7 @@ fn main() {
         Ok(file_data) => (file_data),
         Err(e) => {
             eprintln!("could not open {}: {}", path, e);
-            ::std::process::exit(1);
+            process::exit(1);
         }
     };
     println!("{:?}", file_data);
