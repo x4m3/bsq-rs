@@ -1,7 +1,7 @@
 use rand::Rng;
 use structopt::StructOpt;
 
-#[derive(StructOpt, Debug)]
+#[derive(StructOpt)]
 struct Opt {
     x: u32,
     y: u32,
