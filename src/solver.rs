@@ -6,7 +6,7 @@ use structopt::StructOpt;
 
 #[derive(StructOpt)]
 struct Opt {
-    #[structopt(name = "map", parse(from_os_str))]
+    #[structopt(name = "map", parse(from_os_str), help = "filepath of a valid map")]
     path: PathBuf,
 }
 
@@ -38,9 +38,6 @@ fn parse_map(file: BufReader<File>, nb_lines_in_map: u32) -> Option<Map> {
     // While there are lines to read
     let mut iter = file.lines();
     while let Some(Ok(line)) = iter.next() {
-        // Count number of lines seen so far
-        nb_lines_counter += 1;
-
         // If len line != previous line, return error
         let length_current_line = line.len();
         if let Some(len) = length_last_line {
@@ -63,6 +60,9 @@ fn parse_map(file: BufReader<File>, nb_lines_in_map: u32) -> Option<Map> {
             };
         }
         map.push(array);
+
+        // Count number of lines seen so far
+        nb_lines_counter += 1;
     }
 
     // If at the end, nb lines != nb on first line, return error
