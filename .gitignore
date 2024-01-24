@@ -1,3 +1,4 @@
 /target
 .idea
 *.map
+.DS_Store

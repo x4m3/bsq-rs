@@ -1,17 +1,7 @@
-[package]
-name = "bsq-rs"
-version = "0.1.0"
-authors = ["Philippe Loctaux <p@philippeloctaux.com>"]
-edition = "2018"
+[workspace]
+resolver = "2"
+members = ["generator", "solver"]
 
-[dependencies]
-structopt = "0.3.17"
-rand = "0.7.3"
+[workspace.dependencies]
+clap = { version = "4.4", features = ["derive"] }
 
-[[bin]]
-name = "generator"
-path = "src/generator.rs"
-
-[[bin]]
-name = "solver"
-path = "src/solver.rs"
