@@ -191,7 +191,8 @@ impl Map {
 
 impl Display for Map {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        for line in &self.board {
+        let mut iter = self.board.iter().peekable();
+        while let Some(line) = iter.next() {
             for cell in line {
                 write!(
                     f,
@@ -203,8 +204,13 @@ impl Display for Map {
                     }
                 )?;
             }
-            writeln!(f)?;
+
+            // Add '\n' if we are not at the last line
+            if iter.peek().is_some() {
+                writeln!(f)?;
+            }
         }
+
         Ok(())
     }
 }
