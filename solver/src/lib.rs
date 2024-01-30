@@ -57,3 +57,32 @@ pub fn solve(map: &mut Map) {
     // Create biggest square on the map from the corner
     map.fill_square();
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::io::Write;
+    use tempfile::tempdir;
+
+    #[test]
+    fn read_file_no_newline() {
+        // Create temporary file
+        let dir = tempdir().unwrap();
+        let file_path = dir.path().join("my-temporary-map.txt");
+        let mut file = File::create(&file_path).unwrap();
+        write!(file, "Writing some bytes without a newline").unwrap();
+
+        assert!(open_read_file(&file_path).is_err());
+    }
+
+    #[test]
+    fn invalid_first_line() {
+        // Create temporary file
+        let dir = tempdir().unwrap();
+        let file_path = dir.path().join("my-temporary-map.txt");
+        let mut file = File::create(&file_path).unwrap();
+        writeln!(file, "10").unwrap();
+
+        assert!(open_read_file(&file_path).is_ok());
+    }
+}

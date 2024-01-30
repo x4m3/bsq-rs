@@ -1,19 +1,19 @@
 use std::{fmt::Display, io::BufRead};
 
-#[derive(Clone, PartialEq, Eq)]
+#[derive(Debug, Clone, PartialEq)]
 pub enum PointKind {
     Obstacle,
     FreeSpace(u32),
     Square,
 }
 
-#[derive(Clone)]
+#[derive(Debug, Clone, PartialEq)]
 struct Coordinates {
     x: usize,
     y: usize,
 }
 
-#[derive(Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct Map {
     board: Vec<Vec<PointKind>>,
     biggest_square: Option<PointKind>,
@@ -212,5 +212,63 @@ impl Display for Map {
         }
 
         Ok(())
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::io::Write;
+    use tempfile::tempdir;
+
+    #[test]
+    fn invalid_number_lines() {
+        // Create temporary file
+        let dir = tempdir().unwrap();
+        let file_path = dir.path().join("my-temporary-map.txt");
+        let mut file = std::fs::File::create(&file_path).unwrap();
+        writeln!(file, "10").unwrap();
+        writeln!(file).unwrap();
+        writeln!(file).unwrap();
+        writeln!(file).unwrap();
+
+        let filebuff = super::super::open_read_file(&file_path).unwrap();
+
+        let map = Map::parse(filebuff.0, filebuff.1);
+        assert_eq!(map, Err(ParseError::NumberLines));
+    }
+
+    #[test]
+    fn invalid_characters() {
+        // Create temporary file
+        let dir = tempdir().unwrap();
+        let file_path = dir.path().join("my-temporary-map.txt");
+        let mut file = std::fs::File::create(&file_path).unwrap();
+        writeln!(file, "10").unwrap();
+        writeln!(file, "these characters are not valid").unwrap();
+        writeln!(file, "these characters are not valid").unwrap();
+        writeln!(file, "these characters are not valid").unwrap();
+
+        let filebuff = super::super::open_read_file(&file_path).unwrap();
+
+        let map = Map::parse(filebuff.0, filebuff.1);
+        assert_eq!(map, Err(ParseError::Character));
+    }
+
+    #[test]
+    fn invalid_line_length() {
+        // Create temporary file
+        let dir = tempdir().unwrap();
+        let file_path = dir.path().join("my-temporary-map.txt");
+        let mut file = std::fs::File::create(&file_path).unwrap();
+        writeln!(file, "10").unwrap();
+        writeln!(file, "...").unwrap();
+        writeln!(file, "oo").unwrap();
+        writeln!(file, "...").unwrap();
+
+        let filebuff = super::super::open_read_file(&file_path).unwrap();
+
+        let map = Map::parse(filebuff.0, filebuff.1);
+        assert_eq!(map, Err(ParseError::LineLength));
     }
 }
